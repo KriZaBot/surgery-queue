@@ -1,0 +1,81 @@
+/* РЕСЕТ И ГЛОБАЛНИ СТИЛОВИ */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100vw;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+
+.full-screen-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* ГЛАВНИ КОНТЕЈНЕРИ */
+.sidebar-admin {
+  width: 30%;
+  min-width: 250px;
+  max-width: 400px;
+  background: white;
+  border-right: 1px solid #dcdfe3;
+  padding: 30px 25px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.main-content-admin {
+  width: 70%;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* ЗАЕДНИЧКИ КОМПОНЕНТИ */
+.panel-title {
+  font-weight: 800;
+  margin-bottom: 30px;
+  color: #1a202c;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-submit {
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover { background-color: #2b6cb0; }
+
+.status-pill {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-block;
+}
+.status-pill.waiting { background: #fff3cd; color: #856404; }
+.status-pill.active { background: #d4edda; color: #155724; }
+.status-pill.completed { background: #e2e3e5; color: #383d41; }
+.embg-box.filled {
+    background-color: #3182ce !important;
+    color: white !important;
+    caret-color: transparent !important; /* Ова го трга | курсорот */
+}
+
+.embg-box {
+    text-align: center;
+    font-weight: bold;
+    /* Осигурај се дека нема рамка што трепка */
+    outline: none;
+}

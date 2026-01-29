@@ -1,0 +1,101 @@
+/* ФОРМИ И ГРУПАЦИИ */
+.input-group-custom {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.input-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a5568;
+  margin-bottom: 6px;
+}
+
+.admin-form .form-control {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.admin-form .form-control:focus {
+  border-color: #3182ce;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+  outline: none;
+}
+
+.diag-textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+/* ЕМБГ МОДУЛ */
+.embg-flex-container {
+  display: flex;
+  width: 100%;
+  gap: 3px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.embg-box {
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 3/4;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  background: white;
+  padding: 0;
+}
+
+.embg-dash {
+  width: 10px;
+  height: 2px;
+  background: #cbd5e0;
+  flex-shrink: 0;
+}
+
+.op-add-section {
+    border-top: 2px solid #f0f0f0;
+}
+
+.op-add-section .btn-success {
+    background-color: #28a745;
+    border: none;
+    font-weight: bold;
+}
+
+.op-add-section input.form-control-sm {
+    border: 1px solid #ced4da;
+    font-size: 0.85rem;
+}
+
+.op-add-new {
+    padding: 10px;
+    background: #f8f9fa;
+    color: #28a745;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.op-add-new:hover {
+    background: #d4edda;
+}
+
+/* Останати постоечки стилови */
+.input-group-custom { display: flex; flex-direction: column; margin-bottom: 18px; }
+.input-label { font-size: 0.85rem; font-weight: 700; color: #4a5568; margin-bottom: 6px; }
+.op-dropdown-list { position: absolute; width: 100%; background: white; border: 1px solid #ced4da; border-radius: 4px; z-index: 1050; max-height: 300px; overflow-y: auto; margin-top: 2px; }
+.op-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+.op-item:hover { background-color: #e9ecef; }
+.op-number { font-weight: bold; color: #007bff; margin-right: 8px; }
