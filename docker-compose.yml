@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   backend:
     build: ./backend
@@ -6,6 +7,8 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=hospital_project.settings
 
   frontend:
     build: ./frontend
@@ -13,6 +16,7 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+      - /app/node_modules  
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true

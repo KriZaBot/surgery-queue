@@ -65,13 +65,18 @@ class PatientViewSet(viewsets.ModelViewSet):
             })
         return Response({"error": "Не е пронајден пациент"}, status=status.HTTP_404_NOT_FOUND)
 
+     
     @action(detail=False, methods=['post'])
     def add_urgent(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            
-            serializer.save(status='priority', position=-1)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            patient = serializer.save(status='priority', position=-1)
+            return Response({
+                "first_name": patient.first_name,
+                "last_name": patient.last_name,
+                "position": "ИТНО (Приоритет)",
+                "access_code": patient.access_code
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
@@ -100,11 +105,21 @@ class OperationTypeViewSet(viewsets.ModelViewSet):
     queryset = OperationType.objects.all()
     serializer_class = OperationTypeSerializer
 
+   
     def create(self, request, *args, **kwargs):
-        name = request.data.get('name')
-        obj, created = OperationType.objects.get_or_create(name=name)
-        serializer = self.get_serializer(obj)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        patient = serializer.save(status=None) # Ова го повикува perform_create
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response({
+            "first_name": patient.first_name,
+            "last_name": patient.last_name,
+            "position": patient.position,
+            "access_code": patient.access_code
+        }, status=status.HTTP_201_CREATED, headers=headers)
+
+  
 
 class DoctorProfileViewSet(viewsets.ModelViewSet):
     queryset = DoctorProfile.objects.all()

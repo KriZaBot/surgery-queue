@@ -13,13 +13,13 @@ function App() {
     const [searchTerm, setSearchTerm] = useState("");
     const [activeTab, setActiveTab] = useState('call');
     const [editingField, setEditingField] = useState({ id: null, field: null });
+    const [lastSuccess, setLastSuccess] = useState(null);
     const [formData, setFormData] = useState({
         first_name: '', last_name: '', phone: '', diagnosis: '', operation: '', embg: ''
     });
 
     const nameRef = useRef();
 
-    
     const handleLogout = () => {
         localStorage.removeItem('doctorToken');
         window.location.href = '/login';
@@ -28,7 +28,7 @@ function App() {
     const fetchCounts = () => {
         axios.get('http://127.0.0.1:8000/api/patients/counts/')
             .then(res => setCounts(res.data))
-            .catch(err => console.error("Грешка со бројките:", err));
+            .catch(err => console.error(err));
     };
 
     const fetchPatients = (search = "", tab = "call") => {
@@ -68,7 +68,7 @@ function App() {
         axios.put(`http://127.0.0.1:8000/api/patients/${p.id}/`, p)
             .then(() => {
                 setEditingField({ id: null, field: null });
-                setSearchTerm("")
+                setSearchTerm("");
                 fetchPatients(searchTerm, activeTab);
                 fetchCounts();
             })
@@ -80,23 +80,42 @@ function App() {
             ? 'http://127.0.0.1:8000/api/patients/add_urgent/' 
             : 'http://127.0.0.1:8000/api/patients/';
         
-        axios.post(url, formData).then(() => {
+        axios.post(url, formData).then((res) => {
+            setLastSuccess(res.data);
             fetchPatients(searchTerm, activeTab);
             fetchCounts();
             setFormData({ first_name: '', last_name: '', phone: '', diagnosis: '', operation: '', embg: '' });
             nameRef.current?.focusFirst();
+            setTimeout(() => setLastSuccess(null), 30000);
         }).catch(err => {
-            console.error("Грешка од серверот:", err.response.data);
-            alert("Проблем со внесот: " + JSON.stringify(err.response.data));
+            console.error(err.response.data);
+            alert("Грешка при внес!");
         });
     };
-
-   
 
     return (
         <div className="full-screen-wrapper">
             <aside className="sidebar-admin shadow">
                 <h3 className="panel-title">Нов Пациент</h3>
+
+                {lastSuccess && (
+                    <div className="alert alert-success shadow-sm p-3 mb-3 border-start border-5 border-success position-relative">
+                        <button type="button" className="btn-close position-absolute top-0 end-0 p-2" onClick={() => setLastSuccess(null)} style={{fontSize: '0.7rem'}}></button>
+                        <h6 className="fw-bold mb-1">УСПЕШНО:</h6>
+                        <div className="mb-2 small">{lastSuccess.first_name} {lastSuccess.last_name}</div>
+                        <div className="d-flex justify-content-between bg-white p-2 rounded border">
+                            <div className="text-center px-2">
+                                <small className="d-block text-muted" style={{fontSize: '0.65rem'}}>РЕД БРОЈ</small>
+                                <span className="fw-bold text-primary fs-5">{lastSuccess.position}</span>
+                            </div>
+                            <div className="text-center px-2 border-start">
+                                <small className="d-block text-muted" style={{fontSize: '0.65rem'}}>КОД</small>
+                                <span className="fw-bold text-dark fs-5">{lastSuccess.access_code}</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <form className="admin-form" onSubmit={(e) => e.preventDefault()}>
                     <NameFields 
                         ref={nameRef} 
@@ -132,7 +151,6 @@ function App() {
                         <button type="button" className="btn-urgent" onClick={() => handleSubmit(true)}>ИТНО !</button>
                     </div>
 
-                    
                     <div className="mt-5 pt-3 border-top border-secondary">
                         <button 
                             type="button" 
@@ -154,22 +172,19 @@ function App() {
                                 className={`tab-link ${activeTab === 'call' ? 'active' : ''}`} 
                                 onClick={() => setActiveTab('call')}
                             >
-                                Листа за Повик
-                                ({counts.call})
+                                Листа за Повик ({counts.call})
                             </button>
                             <button 
                                 className={`tab-link ${activeTab === 'waiting' ? 'active' : ''}`} 
                                 onClick={() => setActiveTab('waiting')}
                             >
-                                Чекална
-                                ({counts.waiting})
+                                Чекална ({counts.waiting})
                             </button>
                             <button 
                                 className={`tab-link ${activeTab === 'trash' ? 'active' : ''}`} 
                                 onClick={() => setActiveTab('trash')}
                             >
-                                Корпа
-                                ({counts.trash})
+                                Корпа ({counts.trash})
                             </button>
                         </div>
                     </div>
@@ -184,7 +199,6 @@ function App() {
                     handleLiveEdit={handleLiveEdit} 
                     saveField={saveField}
                     onAction={(updatedPatient) => saveField(updatedPatient)}
-                    
                 />
             </main>
         </div>
