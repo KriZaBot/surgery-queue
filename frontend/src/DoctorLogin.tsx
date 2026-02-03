@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 const DoctorLogin = () => {
-    const [pin, setPin] = useState('');
-    const [loading, setLoading] = useState(false); // За да спречиме дупли кликови
+    const [pin, setPin] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleLogin = async (inputPin) => {
+    const handleLogin = async (inputPin: string): Promise<void> => {
         if (loading) return;
         setLoading(true);
 
@@ -53,11 +53,11 @@ const DoctorLogin = () => {
                 </h1>
                 <input 
                     type="password" 
-                    maxLength="6"
+                    maxLength={6}
                     autoFocus
                     disabled={loading} 
                     value={pin}
-                    onChange={(e) => setPin(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPin(e.target.value)}
                     style={{
                         fontSize: '3rem',
                         textAlign: 'center',

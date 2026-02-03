@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { PatientStatus } from './types';
+
+interface PatientPublicData {
+    first_name: string;
+    last_name: string;
+    status: PatientStatus;
+    position: number;
+}
 
 const PatientPublic = () => {
     const [credentials, setCredentials] = useState({ embg: '', access_code: '' });
-    const [data, setData] = useState(null);
+    const [data, setData] = useState<PatientPublicData | null>(null);
 
     const checkStatus = () => {
-        
-        axios.post('http://127.0.0.1:8000/api/patients/public-check/', credentials)
+        axios.post<PatientPublicData>('http://127.0.0.1:8000/api/patients/public-check/', credentials)
             .then(res => {
                 setData(res.data);
             })

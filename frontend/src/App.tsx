@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AdminPanel from './AdminPanel'; 
 import PatientPublic from './PatientPublic'; 
 import DoctorLogin from './DoctorLogin'; 
 
-const ProtectedRoute = ({ children }) => {
+interface ProtectedRouteProps {
+    children: ReactNode;
+}
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const isLogged = localStorage.getItem('doctorToken'); 
-    return isLogged ? children : <Navigate to="/login" />;
+    return isLogged ? <>{children}</> : <Navigate to="/login" />;
 };
 
 function App() {
     useEffect(() => {
-        let timeout;
+        let timeout: ReturnType<typeof setTimeout>;
 
         const logoutUser = () => {
             const token = localStorage.getItem('doctorToken');
@@ -26,7 +30,6 @@ function App() {
             timeout = setTimeout(logoutUser, 600000);
         };
 
-        
         window.addEventListener('mousemove', resetTimer);
         window.addEventListener('keydown', resetTimer);
         window.addEventListener('click', resetTimer);

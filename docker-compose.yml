@@ -9,6 +9,7 @@ services:
       - ./backend:/app
     environment:
       - DJANGO_SETTINGS_MODULE=hospital_project.settings
+    tty: true
 
   frontend:
     build: ./frontend
@@ -18,5 +19,7 @@ services:
       - ./frontend:/app
       - /app/node_modules  
     stdin_open: true
+    tty: true
+    command: npm run dev -- --host 0.0.0.0
     environment:
       - CHOKIDAR_USEPOLLING=true
